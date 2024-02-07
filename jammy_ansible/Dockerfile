@@ -5,6 +5,7 @@ ENV pip_packages "pipenv ansible pyopenssl"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     python3.11-dev \
+    python3-pip
     openssh-server \
     net-tools sudo \
     && rm -Rf /var/lib/apt/lists/* \
