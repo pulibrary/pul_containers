@@ -1,4 +1,4 @@
-FROM phusion/baseimage:1.0.2
+FROM phusion/baseimage:jammy-1.0.2
 ENV pip_packages "pipenv ansible pyopenssl"
 
 # install python 3.11
