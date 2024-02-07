@@ -4,8 +4,8 @@ ENV pip_packages "pipenv ansible pyopenssl"
 # install python 3.11
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    python3.11-dev \
-    python3-pip
+      python3.11-dev \
+      python3-pip \
     openssh-server \
     net-tools sudo \
     && rm -Rf /var/lib/apt/lists/* \
