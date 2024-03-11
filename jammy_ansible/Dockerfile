@@ -1,20 +1,26 @@
 FROM phusion/baseimage:jammy-1.0.1
-ENV pip_packages "pipenv ansible pyopenssl"
+ENV pip_packages "ansible-core==2.16.3 pyopenssl"
 
 # install python 3.11
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
       python3.11-dev \
       python3-pip \
-    openssh-server \
-    net-tools sudo \
+      openssh-server \
+      net-tools sudo \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
-     && apt-get clean
+    && apt-get clean
 
 # Install Ansible via Pip.
 RUN pip install -U pip
 RUN pip install $pip_packages
+
+# copy collections file
+COPY collections.yaml /
+
+# install ansible collections
+RUN ansible-galaxy collection install -r /collections.yaml
 
 
 # Install Ansible inventory file.
