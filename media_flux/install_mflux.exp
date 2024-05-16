@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+
+set timeout -1
+
+spawn java -jar mflux.jar nogui
+expect "\[accept,decline\]: "
+send -- "accept\r"
+expect "Install location? "
+send -- "/opt/mflux\r"
+expect "Install location? "
