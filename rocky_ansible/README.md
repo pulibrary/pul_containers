@@ -9,5 +9,5 @@ echo YOUR_GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password
 You can build and push your changes with 
 
 ```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/pulibrary/pul_containers:jammy_multi --push .
+docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/pulibrary/pul_containers:rocky_multi --push .
 ```

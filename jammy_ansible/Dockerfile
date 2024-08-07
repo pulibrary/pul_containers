@@ -1,5 +1,9 @@
-FROM phusion/baseimage:jammy-1.0.1
-ENV pip_packages "ansible-core==2.16.3 pyopenssl"
+# Use BuildKit syntax for multiarch support
+# syntax = docker/dockerfile:1.4
+
+FROM ubuntu:22.04
+
+ENV pip_packages="ansible-core==2.16.3 pyopenssl"
 
 # install python 3.11
 RUN apt-get update \
@@ -22,10 +26,10 @@ COPY collections.yaml /
 # install ansible collections
 RUN ansible-galaxy collection install -r /collections.yaml
 
-
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 CMD ["/sbin/my_init"]
+
