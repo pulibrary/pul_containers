@@ -4,6 +4,8 @@
 FROM ubuntu:22.04
 
 ENV pip_packages="ansible-core==2.16.3 pyopenssl"
+# Create the /tmp/.ansible directory
+RUN mkdir -p /root/.ansible/tmp && chmod -R 777 /root/.ansible/tmp
 
 # install python 3.11
 RUN apt-get update \
@@ -31,5 +33,3 @@ RUN mkdir -p /etc/ansible
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
-CMD ["/sbin/my_init"]
-
