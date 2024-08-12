@@ -1,5 +1,5 @@
 # Use a minimal base image
-FROM rockylinux:9 AS builder
+FROM eniocarboni/docker-rockylinux-systemd:latest AS builder
 
 # Install Python 3.11 and other necessary packages
 RUN yum install -y epel-release \
@@ -33,7 +33,7 @@ RUN mkdir -p /root/.ansible/tmp && chmod -R 777 /root/.ansible/tmp
 
 
 # Final stage: use a fresh image to reduce size
-FROM rockylinux:9
+FROM eniocarboni/docker-rockylinux-systemd:latest
 
 # Copy necessary files from the builder stage
 COPY --from=builder /usr /usr
