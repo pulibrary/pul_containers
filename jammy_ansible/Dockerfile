@@ -4,32 +4,32 @@
 FROM ubuntu:22.04
 
 ENV pip_packages="ansible-core==2.16.3 pyopenssl"
+# Create the /tmp/.ansible directory
+RUN mkdir -p /root/.ansible/tmp && chmod -R 777 /root/.ansible/tmp
 
-# Install Python 3.11, pip, and necessary packages in one layer
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+# install python 3.11
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
       python3.11-dev \
       python3-pip \
       openssh-server \
-      net-tools \
-      sudo && \
-    pip install -U pip && \
-    pip install $pip_packages && \
-    # Clean up APT when done
-    apt-get remove --purge -y python3-pip && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc /usr/share/man && \
-    apt-get clean
+      net-tools sudo \
+    && rm -Rf /var/lib/apt/lists/* \
+    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
+    && apt-get clean
 
-# Copy collections file and install ansible collections
+# Install Ansible via Pip.
+RUN pip install -U pip
+RUN pip install $pip_packages
+
+# copy collections file
 COPY collections.yaml /
-RUN ansible-galaxy collection install -r /collections.yaml && rm /collections.yaml
 
-# Install Ansible inventory file
-RUN mkdir -p /etc/ansible && \
-    echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+# install ansible collections
+RUN ansible-galaxy collection install -r /collections.yaml
 
-# Define volumes
+# Install Ansible inventory file.
+RUN mkdir -p /etc/ansible
+RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
-
-CMD ["/sbin/my_init"]

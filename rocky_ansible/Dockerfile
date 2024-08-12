@@ -1,6 +1,3 @@
- /tmp/.ansible /tmp/.ansible
-
-VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 # Use a minimal base image
 FROM rockylinux:9 AS builder
 
@@ -32,7 +29,8 @@ RUN ansible-galaxy collection install -r /collections.yaml \
     && rm /collections.yaml
 
 # Create the /tmp/.ansible directory
-RUN mkdir -p /tmp/.ansible/tmp
+RUN mkdir -p /root/.ansible/tmp && chmod -R 777 /root/.ansible/tmp
+
 
 # Final stage: use a fresh image to reduce size
 FROM rockylinux:9
@@ -40,4 +38,6 @@ FROM rockylinux:9
 # Copy necessary files from the builder stage
 COPY --from=builder /usr /usr
 COPY --from=builder /etc /etc
-COPY --from=builder
+COPY --from=builder /root/.ansible /root/.ansible
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
