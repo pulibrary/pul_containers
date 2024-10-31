@@ -1,6 +1,6 @@
 ### Build this manually
 
-Login to your quay account with
+Login to your github account with
 
 ```bash
 echo YOUR_GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin

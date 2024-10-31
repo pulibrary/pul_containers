@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.4
 # Define architectures
-ARG TARGETARCH
+ARG TARGETARCH=linux/amd64
 
 # Use appropriate base image based on architecture
 FROM --platform=$TARGETARCH ubuntu:22.04
@@ -32,6 +32,9 @@ RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 # Create Ansible temporary directory
 RUN mkdir -p /root/.ansible/tmp && chmod -R 777 /root/.ansible/tmp
+# Create Ansible temporary directory
+#
+RUN mkdir -p /tmp/ansible && chmod -R 1777 /tmp/ansible
 
 # Expose SSH port
 EXPOSE 22
