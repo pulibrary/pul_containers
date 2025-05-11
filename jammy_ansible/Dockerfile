@@ -14,6 +14,9 @@ RUN apt-get update \
       net-tools \
       sudo \
       systemd \
+      systemd-sysv \
+      libsystemd0 \
+    && echo "ReadKMsg=no" >> /etc/systemd/journald.conf \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean
@@ -40,7 +43,7 @@ RUN mkdir -p /tmp/ansible && chmod -R 1777 /tmp/ansible
 EXPOSE 22
 
 # Set up entrypoint for systemd
-CMD ["/usr/sbin/init"]
+ENTRYPOINT ["/sbin/init"]
 
 # Define volumes
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
